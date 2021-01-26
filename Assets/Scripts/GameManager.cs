@@ -11,7 +11,10 @@ public class GameManager : MonoBehaviour
     private Rigidbody2D _player2Rigidbody2D;
 
     public BallControl ballControl;
-    // Start is called before the first frame update
+    private Rigidbody2D _ballRigidBody2D;
+    private CircleCollider2D _ballCollider2D;
+
+    public int maxScore;
     void Start()
     {
         
