@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
@@ -14,9 +13,13 @@ public class PlayerControl : MonoBehaviour
 
     private Rigidbody2D _rigidbody2D;
     private int _score;
+
+    private ContactPoint2D _lastContactPoint;
+    private Vector2 _trajectoryOrigin;
     void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        _trajectoryOrigin = transform.position;
     }
 
     void Update()
@@ -60,5 +63,20 @@ public class PlayerControl : MonoBehaviour
         _score = 0;
     }
 
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.name == "Ball")
+        {
+            _lastContactPoint = other.GetContact(0);
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        _trajectoryOrigin = transform.position;
+    }
+
     public int Score => _score;
+    public ContactPoint2D LastContactPoint => _lastContactPoint;
+    public Vector2 TrajectoryOrigin => _trajectoryOrigin;
 }
