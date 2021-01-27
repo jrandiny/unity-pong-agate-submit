@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 430296983}
   - component: {fileID: 430296984}
   - component: {fileID: 430296985}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RightWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -511,7 +511,7 @@ GameObject:
   - component: {fileID: 883277925}
   - component: {fileID: 883277926}
   - component: {fileID: 883277927}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LeftWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -820,26 +820,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 118591723446689895, guid: 49be9ac7eaed0e3238cfa6c49606c670,
-        type: 3}
-      propertyPath: initialMagnitude
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 118591723446689895, guid: 49be9ac7eaed0e3238cfa6c49606c670,
-        type: 3}
-      propertyPath: xInitialForceDirection
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 118591723446689895, guid: 49be9ac7eaed0e3238cfa6c49606c670,
-        type: 3}
-      propertyPath: yInitialForceDirection
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 118591723446689895, guid: 49be9ac7eaed0e3238cfa6c49606c670,
-        type: 3}
-      propertyPath: forceInitialMagnitude
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 1262180756878436369, guid: 49be9ac7eaed0e3238cfa6c49606c670,
         type: 3}
       propertyPath: m_LocalPosition.x

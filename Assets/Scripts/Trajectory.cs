@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class Trajectory : MonoBehaviour
 {
-
     public BallControl ball;
     private CircleCollider2D _ballCircleCollider2D;
     private Rigidbody2D _ballRigidbody2D;
 
     public GameObject ballAtCollision;
+
     void Start()
     {
         _ballRigidbody2D = ball.GetComponent<Rigidbody2D>();
@@ -19,54 +19,45 @@ public class Trajectory : MonoBehaviour
 
     void Update()
     {
-        bool drawBallAtCollision = false;
+        RaycastHit2D circleCast = Physics2D.CircleCast(
+            _ballRigidbody2D.position,
+            _ballCircleCollider2D.radius,
+            _ballRigidbody2D.velocity.normalized
+        );
 
-        var offsetHitPoint = new Vector2();
-        
-        RaycastHit2D[] circleCastHit2DArray =
-            Physics2D.CircleCastAll(_ballRigidbody2D.position, _ballCircleCollider2D.radius,
-                _ballRigidbody2D.velocity.normalized);
-
-        foreach (RaycastHit2D circleCastHit2D in circleCastHit2DArray)
+        if (circleCast.distance != 0)
         {
-            if (circleCastHit2D.collider != null &&
-                circleCastHit2D.collider.GetComponent<BallControl>() == null)
+            var hitPoint = circleCast.point;
+            var hitNormal = circleCast.normal;
+
+            var offsetHitPoint = hitPoint + hitNormal * _ballCircleCollider2D.radius;
+
+            DottedLine.DottedLine.Instance.DrawDottedLine(ball.transform.position, offsetHitPoint);
+
+            var inVector = (offsetHitPoint - ball.TrajectoryOrigin).normalized;
+            var outVector = Vector2.Reflect(inVector, hitNormal);
+
+            var outDot = Vector2.Dot(outVector, hitNormal);
+            if (outDot > -1.0f && outDot < 1.0)
             {
-                Vector2 hitPoint = circleCastHit2D.point;
-                Vector2 hitNormal = circleCastHit2D.normal;
+                DottedLine.DottedLine.Instance.DrawDottedLine(
+                    offsetHitPoint,
+                    offsetHitPoint + outVector * 10.0f);
 
-                offsetHitPoint = hitPoint + hitNormal * _ballCircleCollider2D.radius;
-
-                DottedLine.DottedLine.Instance.DrawDottedLine(ball.transform.position, offsetHitPoint);
-
-                if (circleCastHit2D.collider.GetComponent<SideWall>() == null)
-                {
-                    Vector2 inVector = (offsetHitPoint - ball.TrajectoryOrigin).normalized;
-                    Vector2 outVector = Vector2.Reflect(inVector, hitNormal);
-
-                    float outDot = Vector2.Dot(outVector, hitNormal);
-                    if (outDot > -1.0f && outDot < 1.0)
-                    {
-                        DottedLine.DottedLine.Instance.DrawDottedLine(
-                            offsetHitPoint,
-                            offsetHitPoint + outVector * 10.0f);
-
-                        drawBallAtCollision = true;
-                    }
-                }
-
-                break;
+                ballAtCollision.transform.position = offsetHitPoint;
+                ballAtCollision.SetActive(true);
             }
-        }
-
-        if (drawBallAtCollision)
-        {
-            ballAtCollision.transform.position = offsetHitPoint;
-            ballAtCollision.SetActive(true);
         }
         else
         {
+            Vector2 position = ball.transform.position;
+            DottedLine.DottedLine.Instance.DrawDottedLine(
+                position,
+                position + (_ballRigidbody2D.velocity.normalized * 30.0f)
+            );
+
             ballAtCollision.SetActive(false);
+
         }
     }
 
