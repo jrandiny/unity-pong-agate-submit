@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     private Rigidbody2D _ballRigidBody2D;
     private CircleCollider2D _ballCollider2D;
 
+    public Trajectory trajectory;
+
     public int maxScore;
 
     private bool _showDebugWindow = false;
@@ -25,10 +27,7 @@ public class GameManager : MonoBehaviour
         _player2Rigidbody2D = player2.GetComponent<Rigidbody2D>();
         _ballRigidBody2D = ballControl.GetComponent<Rigidbody2D>();
         _ballCollider2D = ballControl.GetComponent<CircleCollider2D>();
-    }
-
-    void Update()
-    {
+        trajectory.enabled = false;
     }
 
     private void OnGUI()
@@ -89,6 +88,7 @@ public class GameManager : MonoBehaviour
         if (GUI.Button(new Rect(Screen.width / 2 - 60, Screen.height - 73, 120, 53), "TOGGLE\nDEBUG INFO"))
         {
             _showDebugWindow = !_showDebugWindow;
+            trajectory.enabled = !trajectory.enabled;
         }
     }
 }

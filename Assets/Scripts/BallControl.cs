@@ -9,16 +9,22 @@ public class BallControl : MonoBehaviour
     public float xInitialForce;
     public float yInitialForce;
 
+    private Vector2 _trajectoryOrigin;
+
     void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        _trajectoryOrigin = transform.position;
 
         RestartGame();
     }
 
-    void Update()
+    private void OnCollisionExit2D(Collision2D other)
     {
+        _trajectoryOrigin = transform.position;
     }
+
+    public Vector2 TrajectoryOrigin => _trajectoryOrigin;
 
     void ResetBall()
     {
