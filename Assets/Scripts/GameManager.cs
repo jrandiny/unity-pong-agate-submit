@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public PlayerControl player1;
-    public PlayerControl player2;
+    public PlayerControl player1Left;
+    public PlayerControl player2Right;
+
+    public PowerUpManager powerUpManager;
+    public float powerUpSpawnMinTimer = 3.0f;
+    public float powerUpSpawnMaxTimer = 10.0f;
 
     public BallControl ballControl;
     private Rigidbody2D _ballRigidBody2D;
@@ -17,6 +19,7 @@ public class GameManager : MonoBehaviour
     public int maxScore;
 
     private bool _showDebugWindow = false;
+    private bool _gameOver = false;
 
     void Start()
     {
@@ -24,32 +27,54 @@ public class GameManager : MonoBehaviour
         _ballCollider2D = ballControl.GetComponent<CircleCollider2D>();
         trajectory.enabled = false;
 
-        player1.UseLargeCollider = false;
-        player2.UseLargeCollider = false;
+        StartCoroutine(SpawnPowerUpRoutine());
+        StartCoroutine(SpawnFireballRoutine());
     }
+
+    private IEnumerator SpawnPowerUpRoutine()
+    {
+        while (!_gameOver)
+        {
+            yield return new WaitForSeconds(Random.Range(powerUpSpawnMinTimer, powerUpSpawnMaxTimer));
+            powerUpManager.SpawnPowerUp();
+        }
+
+        powerUpManager.DestroyPowerUp();
+    }
+
+    private IEnumerator SpawnFireballRoutine()
+    {
+        while (!_gameOver)
+        {
+            yield return new WaitForSeconds(Random.Range(5.0f, 10.0f));
+        }
+    }
+
 
     private void OnGUI()
     {
-        GUI.Label(new Rect(Screen.width / 2 - 150 - 12, 20, 100, 100), player1.Score.ToString());
-        GUI.Label(new Rect(Screen.width / 2 + 150 + 12, 20, 100, 100), player2.Score.ToString());
+        GUI.Label(new Rect(Screen.width / 2 - 150 - 12, 20, 100, 100), player1Left.Score.ToString());
+        GUI.Label(new Rect(Screen.width / 2 + 150 + 12, 20, 100, 100), player2Right.Score.ToString());
 
         if (GUI.Button(new Rect(Screen.width / 2 - 60, 35, 120, 53), "RESTART"))
         {
-            player1.ResetScore();
-            player2.ResetScore();
+            player1Left.ResetScore();
+            player2Right.ResetScore();
 
             ballControl.SendMessage("RestartGame", null, SendMessageOptions.RequireReceiver);
         }
 
-        if (player1.Score == maxScore)
+        if (player1Left.Score == maxScore)
         {
             GUI.Label(new Rect(Screen.width / 2 - 150, Screen.height / 2 - 10, 2000, 1000), "PLAYER ONE WINS");
             ballControl.SendMessage("ResetBall", null, SendMessageOptions.RequireReceiver);
+            _gameOver = true;
         }
-        else if (player2.Score == maxScore)
+        else if (player2Right.Score == maxScore)
         {
             GUI.Label(new Rect(Screen.width / 2 + 30, Screen.height / 2 - 10, 2000, 1000), "PLAYER TWO WINS");
             ballControl.SendMessage("ResetBall", null, SendMessageOptions.RequireReceiver);
+            _gameOver = true;
         }
 
         if (_showDebugWindow)
@@ -63,10 +88,10 @@ public class GameManager : MonoBehaviour
             var ballMomentum = ballMass * ballVelocity;
             var ballFriction = _ballCollider2D.friction;
 
-            var impulsePlayer1X = player1.LastContactPoint.normalImpulse;
-            var impulsePlayer1Y = player1.LastContactPoint.tangentImpulse;
-            var impulsePlayer2X = player2.LastContactPoint.normalImpulse;
-            var impulsePlayer2Y = player2.LastContactPoint.tangentImpulse;
+            var impulsePlayer1X = player1Left.LastContactPoint.normalImpulse;
+            var impulsePlayer1Y = player1Left.LastContactPoint.tangentImpulse;
+            var impulsePlayer2X = player2Right.LastContactPoint.normalImpulse;
+            var impulsePlayer2Y = player2Right.LastContactPoint.tangentImpulse;
 
             var debugText =
                 "Ball mass = " + ballMass + "\n" +
