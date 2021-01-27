@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class PowerUpController : MonoBehaviour
 {
-    [HideInInspector] public UnityEvent activated;
+    [HideInInspector] public UnityEvent activated = new UnityEvent();
 
     private void OnTriggerEnter2D(Collider2D other)
     {

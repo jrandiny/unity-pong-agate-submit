@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -18,6 +20,8 @@ public class PlayerControl : MonoBehaviour
 
     private ContactPoint2D _lastContactPoint;
     private bool _useLargeCollider;
+
+    [HideInInspector] public UnityEvent dieFireball = new UnityEvent();
 
     void Start()
     {
@@ -74,6 +78,12 @@ public class PlayerControl : MonoBehaviour
         if (other.gameObject.name == "Ball")
         {
             _lastContactPoint = other.GetContact(0);
+        }
+
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            other.gameObject.SetActive(false);
+            dieFireball.Invoke();
         }
     }
 

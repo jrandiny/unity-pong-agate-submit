@@ -14,12 +14,17 @@ public class GameManager : MonoBehaviour
     private Rigidbody2D _ballRigidBody2D;
     private CircleCollider2D _ballCollider2D;
 
+    public FireBallController fireBallPrefab;
+
     public Trajectory trajectory;
 
     public int maxScore;
 
     private bool _showDebugWindow = false;
     private bool _gameOver = false;
+
+    private bool _player1Win = false;
+    private bool _player2Win = false;
 
     void Start()
     {
@@ -29,6 +34,15 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(SpawnPowerUpRoutine());
         StartCoroutine(SpawnFireballRoutine());
+
+        player1Left.dieFireball.AddListener(delegate
+        {
+            _player2Win = true;
+        });
+        player2Right.dieFireball.AddListener(delegate
+        {
+            _player1Win = true;
+        });
     }
 
     private IEnumerator SpawnPowerUpRoutine()
@@ -47,6 +61,7 @@ public class GameManager : MonoBehaviour
         while (!_gameOver)
         {
             yield return new WaitForSeconds(Random.Range(5.0f, 10.0f));
+            Instantiate(fireBallPrefab);
         }
     }
 
@@ -64,13 +79,13 @@ public class GameManager : MonoBehaviour
             ballControl.SendMessage("RestartGame", null, SendMessageOptions.RequireReceiver);
         }
 
-        if (player1Left.Score == maxScore)
+        if (player1Left.Score == maxScore || _player1Win)
         {
             GUI.Label(new Rect(Screen.width / 2 - 150, Screen.height / 2 - 10, 2000, 1000), "PLAYER ONE WINS");
             ballControl.SendMessage("ResetBall", null, SendMessageOptions.RequireReceiver);
             _gameOver = true;
         }
-        else if (player2Right.Score == maxScore)
+        else if (player2Right.Score == maxScore || _player2Win)
         {
             GUI.Label(new Rect(Screen.width / 2 + 30, Screen.height / 2 - 10, 2000, 1000), "PLAYER TWO WINS");
             ballControl.SendMessage("ResetBall", null, SendMessageOptions.RequireReceiver);

@@ -593,7 +593,11 @@ MonoBehaviour:
   player1Left: {fileID: 848876803}
   player2Right: {fileID: 1427418824}
   powerUpManager: {fileID: 825684546}
+  powerUpSpawnMinTimer: 3
+  powerUpSpawnMaxTimer: 10
   ballControl: {fileID: 349039272}
+  fireBallPrefab: {fileID: 6312775856368167374, guid: da905df38a5ef34079a175ed41514391,
+    type: 3}
   trajectory: {fileID: 570640233}
   maxScore: 5
 --- !u!4 &825684545
@@ -623,8 +627,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerUp: {fileID: 303969474}
-  minSpawn: {x: 0, y: 0}
-  maxSpawn: {x: 0, y: 0}
+  minSpawn: {x: -4, y: -4}
+  maxSpawn: {x: 4, y: 4}
   player1Left: {fileID: 848876803}
   player2Right: {fileID: 1427418824}
   ballRigidBody2D: {fileID: 349039269}
