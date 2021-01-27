@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8473627255997563712}
   - component: {fileID: 7835257845437357950}
   m_Layer: 0
-  m_Name: Player1
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147,3 +147,4 @@ MonoBehaviour:
   downButton: 115
   speed: 10
   yBoundary: 9
+  largeHeightMultiplier: 2

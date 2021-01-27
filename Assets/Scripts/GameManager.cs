@@ -8,9 +8,6 @@ public class GameManager : MonoBehaviour
     public PlayerControl player1;
     public PlayerControl player2;
 
-    private Rigidbody2D _player1Rigidbody2D;
-    private Rigidbody2D _player2Rigidbody2D;
-
     public BallControl ballControl;
     private Rigidbody2D _ballRigidBody2D;
     private CircleCollider2D _ballCollider2D;
@@ -23,11 +20,12 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        _player1Rigidbody2D = player1.GetComponent<Rigidbody2D>();
-        _player2Rigidbody2D = player2.GetComponent<Rigidbody2D>();
         _ballRigidBody2D = ballControl.GetComponent<Rigidbody2D>();
         _ballCollider2D = ballControl.GetComponent<CircleCollider2D>();
         trajectory.enabled = false;
+
+        player1.UseLargeCollider = false;
+        player2.UseLargeCollider = false;
     }
 
     private void OnGUI()

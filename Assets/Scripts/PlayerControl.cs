@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -11,13 +10,20 @@ public class PlayerControl : MonoBehaviour
     public float speed = 10.0f;
     public float yBoundary = 9.0f;
 
+    // For resize
+    public float largeHeightMultiplier;
+
     private Rigidbody2D _rigidbody2D;
     private int _score;
 
     private ContactPoint2D _lastContactPoint;
+    private bool _useLargeCollider;
+
     void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
+
+        _useLargeCollider = false;
     }
 
     void Update()
@@ -27,7 +33,8 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetKey(upButton))
         {
             velocity.y = speed;
-        }else if (Input.GetKey(downButton))
+        }
+        else if (Input.GetKey(downButton))
         {
             velocity.y = -speed;
         }
@@ -43,7 +50,8 @@ public class PlayerControl : MonoBehaviour
         if (position.y > yBoundary)
         {
             position.y = yBoundary;
-        }else if (position.y < -yBoundary)
+        }
+        else if (position.y < -yBoundary)
         {
             position.y = -yBoundary;
         }
@@ -71,4 +79,14 @@ public class PlayerControl : MonoBehaviour
 
     public int Score => _score;
     public ContactPoint2D LastContactPoint => _lastContactPoint;
+
+    public bool UseLargeCollider
+    {
+        get => _useLargeCollider;
+        set
+        {
+            transform.localScale = new Vector3(1, value ? largeHeightMultiplier : 1);
+            _useLargeCollider = value;
+        }
+    }
 }
