@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
             player1.ResetScore();
             player2.ResetScore();
 
-            ballControl.SendMessage("RestartGame", 0.5f, SendMessageOptions.RequireReceiver);
+            ballControl.SendMessage("RestartGame", null, SendMessageOptions.RequireReceiver);
         }
 
         if (player1.Score == maxScore)
