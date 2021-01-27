@@ -133,5 +133,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dd58b57523d3356fbfac3ccfb5a0344, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xInitialForce: 50
-  yInitialForce: 15
+  xInitialForceDirection: 50
+  yInitialForceDirection: 25
+  forceInitialMagnitude: 50
