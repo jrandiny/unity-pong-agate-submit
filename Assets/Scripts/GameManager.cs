@@ -32,17 +32,27 @@ public class GameManager : MonoBehaviour
         _ballCollider2D = ballControl.GetComponent<CircleCollider2D>();
         trajectory.enabled = false;
 
+        player1Left.dieFireball.AddListener(delegate { _player2Win = true; });
+        player2Right.dieFireball.AddListener(delegate { _player1Win = true; });
+
+        StartGame();
+    }
+
+    private void StartGame()
+    {
+        _player1Win = false;
+        _player2Win = false;
+
+        player1Left.ResetScore();
+        player2Right.ResetScore();
+        _gameOver = false;
+
+        ballControl.SendMessage("RestartGame", null, SendMessageOptions.RequireReceiver);
+
+        powerUpManager.Reset();
+
         StartCoroutine(SpawnPowerUpRoutine());
         StartCoroutine(SpawnFireballRoutine());
-
-        player1Left.dieFireball.AddListener(delegate
-        {
-            _player2Win = true;
-        });
-        player2Right.dieFireball.AddListener(delegate
-        {
-            _player1Win = true;
-        });
     }
 
     private IEnumerator SpawnPowerUpRoutine()
@@ -50,7 +60,10 @@ public class GameManager : MonoBehaviour
         while (!_gameOver)
         {
             yield return new WaitForSeconds(Random.Range(powerUpSpawnMinTimer, powerUpSpawnMaxTimer));
-            powerUpManager.SpawnPowerUp();
+            if (!_gameOver)
+            {
+                powerUpManager.SpawnPowerUp();
+            }
         }
 
         powerUpManager.DestroyPowerUp();
@@ -61,7 +74,10 @@ public class GameManager : MonoBehaviour
         while (!_gameOver)
         {
             yield return new WaitForSeconds(Random.Range(5.0f, 10.0f));
-            Instantiate(fireBallPrefab);
+            if (!_gameOver)
+            {
+                Instantiate(fireBallPrefab);
+            }
         }
     }
 
@@ -73,10 +89,7 @@ public class GameManager : MonoBehaviour
 
         if (GUI.Button(new Rect(Screen.width / 2 - 60, 35, 120, 53), "RESTART"))
         {
-            player1Left.ResetScore();
-            player2Right.ResetScore();
-
-            ballControl.SendMessage("RestartGame", null, SendMessageOptions.RequireReceiver);
+            StartGame();
         }
 
         if (player1Left.Score == maxScore || _player1Win)

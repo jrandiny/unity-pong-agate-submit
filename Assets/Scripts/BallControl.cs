@@ -14,8 +14,6 @@ public class BallControl : MonoBehaviour
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _trajectoryOrigin = transform.position;
-
-        RestartGame();
     }
 
     private void OnCollisionExit2D(Collision2D other)
@@ -39,7 +37,6 @@ public class BallControl : MonoBehaviour
         var force = new Vector2(
             randomDirection < 1.0f ? -xInitialForceDirection : xInitialForceDirection,
             yRandomInitialForce);
-
 
         _rigidbody2D.AddForce(
             force.normalized * forceInitialMagnitude

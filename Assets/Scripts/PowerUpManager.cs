@@ -20,8 +20,6 @@ public class PowerUpManager : MonoBehaviour
 
     void Start()
     {
-        powerUp.gameObject.SetActive(false);
-
         powerUp.activated.AddListener(delegate
         {
             _powerUpTaken = true;
@@ -29,6 +27,16 @@ public class PowerUpManager : MonoBehaviour
 
             StartCoroutine(ballRigidBody2D.velocity.x > 0 ? SmallTimer(player1Left) : SmallTimer(player2Right));
         });
+
+        Reset();
+    }
+
+    public void Reset()
+    {
+        player1Left.UseLargeCollider = false;
+        player2Right.UseLargeCollider = false;
+
+        powerUp.gameObject.SetActive(false);
     }
 
     private IEnumerator SmallTimer(PlayerControl player)
