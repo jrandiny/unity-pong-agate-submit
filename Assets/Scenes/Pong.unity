@@ -965,11 +965,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 118591723446689895, guid: 49be9ac7eaed0e3238cfa6c49606c670,
-        type: 3}
-      propertyPath: forceInitialMagnitude
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 1262180756878436369, guid: 49be9ac7eaed0e3238cfa6c49606c670,
         type: 3}
       propertyPath: m_LocalPosition.x

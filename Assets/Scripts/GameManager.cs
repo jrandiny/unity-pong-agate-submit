@@ -47,8 +47,6 @@ public class GameManager : MonoBehaviour
         player2Right.ResetScore();
         _gameOver = false;
 
-        ballControl.SendMessage("RestartGame", null, SendMessageOptions.RequireReceiver);
-
         powerUpManager.Reset();
 
         StartCoroutine(SpawnPowerUpRoutine());
@@ -90,6 +88,8 @@ public class GameManager : MonoBehaviour
         if (GUI.Button(new Rect(Screen.width / 2 - 60, 35, 120, 53), "RESTART"))
         {
             StartGame();
+
+            ballControl.SendMessage("RestartGame", null, SendMessageOptions.RequireReceiver);
         }
 
         if (player1Left.Score == maxScore || _player1Win)
